@@ -20,7 +20,9 @@ jobs:
         run: docker build -t devops-task .
 
       - name: Create Container
-        run: docker create --name devops-task devops-task
+        run: |
+        docker create --name devops-task devops-task
+        docker ps -a   
 
   extract:
     name: Extract Files
