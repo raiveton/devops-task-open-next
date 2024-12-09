@@ -39,7 +39,7 @@ jobs:
 
   package:
     name: Package Subfolders
-    needs: extract
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Download Extracted Files
