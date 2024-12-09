@@ -1,0 +1,62 @@
+name: Docker and S3 Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker Image
+        run: docker build -t devops-task .
+
+      - name: Create Container
+        run: docker create --name devops-task devops-task
+
+  extract:
+    name: Extract Files
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Copy Files from Container
+        run: |
+          mkdir -p ./out
+          docker cp devops-task:/app/.open-next/ ./out
+          docker rm devops-task
+
+      - name: Upload Extracted Files as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: extracted-files
+          path: ./out/
+
+  package:
+    name: Package Subfolders
+    needs: extract
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Extracted Files
+        uses: actions/download-artifact@v3
+        with:
+          name: extracted-files
+
+      - name: Install Zip Utility
+        run: sudo apt-get install -y zip
+
+      - name: Zip Subfolders
+        run: |
+          cd out
+          for dir in */; do
+            zip -r "${dir%/}.zip" "$dir"
+          done
+          ls -l
+          cd ..
