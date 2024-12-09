@@ -44,11 +44,9 @@ jobs:
         run: sudo apt-get install -y zip
       - name: check folder
         run: ls -la
-#      - name: Zip Subfolders
-#        run: |
-#          cd out
-#          for dir in */; do
-#            zip -r "${dir%/}.zip" "$dir"
-#          done
-#          ls -l
-#          cd ..
+      - name: Zip Subfolders
+        run: |
+          for dir in */; do
+            zip -r "${dir%/}.zip" "$dir"
+          done
+          ls -la
