@@ -29,8 +29,8 @@ jobs:
           mkdir -p ./out
           docker ps -a
           docker cp devops-task:/app/.open-next/ ./out
-          cd out
-          ls
+      - name: List Files in Out Directory
+        run: ls -l ./out
       - name: Upload Extracted Files as Artifact
         uses: actions/upload-artifact@v3
         with:
