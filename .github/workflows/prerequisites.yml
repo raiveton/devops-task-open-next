@@ -32,6 +32,7 @@ jobs:
       - name: Copy Files from Container
         run: |
           mkdir -p ./out
+          docker ps -a
           docker cp devops-task:/app/.open-next/ ./out
           docker rm devops-task
 
