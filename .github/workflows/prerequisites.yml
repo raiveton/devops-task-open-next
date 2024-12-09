@@ -24,11 +24,6 @@ jobs:
           docker create --name devops-task devops-task
           docker ps -a
 
-  extract:
-    name: Extract Files
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
       - name: Copy Files from Container
         run: |
           mkdir -p ./out
