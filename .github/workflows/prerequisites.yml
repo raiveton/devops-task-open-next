@@ -60,10 +60,10 @@ jobs:
           aws-region: us-east-1
      
       - name: Create S3 Bucket
-        run: aws s3 mb s3://lambda_devops_task --region us-east-1 || echo "Bucket already exists"
+        run: aws s3 mb s3://lambda-devops-task --region us-east-1
       
       - name: Upload Zips Listed in zip-files.txt
         run: |
           while IFS= read -r file; do
-            aws s3 cp "./out/$file" "s3://lambda/$file"
+            aws s3 cp "$file" "s3://lambda/$file"
           done < ./out/zip-files.txt        
