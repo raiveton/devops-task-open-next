@@ -50,3 +50,19 @@ jobs:
             zip -r "${dir%/}.zip" "$dir"
           done
           ls -la
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+     
+      - name: Create S3 Bucket
+        run: aws s3 mb s3://lambda --region us-east-1 || echo "Bucket already exists"
+      
+      - name: Upload Zips Listed in zip-files.txt
+        run: |
+          while IFS= read -r file; do
+            aws s3 cp "./out/$file" "s3://lambda/$file"
+          done < ./out/zip-files.txt        
