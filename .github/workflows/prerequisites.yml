@@ -66,4 +66,4 @@ jobs:
         run: |
           while IFS= read -r file; do
             aws s3 cp "$file" "s3://lambda/$file"
-          done < ./out/zip-files.txt        
+          done < zip-files.txt        
