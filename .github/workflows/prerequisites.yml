@@ -49,6 +49,7 @@ jobs:
           for dir in */; do
             zip -r "${dir%/}.zip" "$dir"
           done
+          ls *.zip > zip-files.txt  # Generate list of zip files
           ls -la
 
       - name: Configure AWS Credentials
@@ -59,7 +60,7 @@ jobs:
           aws-region: us-east-1
      
       - name: Create S3 Bucket
-        run: aws s3 mb s3://lambda --region us-east-1 || echo "Bucket already exists"
+        run: aws s3 mb s3://lambda_devops_task --region us-east-1 || echo "Bucket already exists"
       
       - name: Upload Zips Listed in zip-files.txt
         run: |
